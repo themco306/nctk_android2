@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const ModalBottom = ({ children, isVisible, handleCloseModal ,title=" "}) => {
+const ModalBottom = ({ children, isVisible, handleCloseModal ,title=" ",height='40%',center=false}) => {
+  const modalViewStyle = {
+    ...styles.modalView,
+    height: height, // Sử dụng giá trị height từ props
+  };
+  const detailScrollView = {
+    ...styles.detailScrollView,
+  }
+  
+  
+
   return (
     <Modal
     animationType="slide"
@@ -10,15 +20,21 @@ const ModalBottom = ({ children, isVisible, handleCloseModal ,title=" "}) => {
     onRequestClose={handleCloseModal}
   >
     <View style={styles.centeredView}>
-      <View style={styles.modalView}>
+      <View style={modalViewStyle}>
         <View style={styles.modalLabel}>
           <Text style={styles.modalText}>{title}</Text>
           <TouchableOpacity onPress={handleCloseModal}>
             <Text style={styles.modalClose}>X</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={styles.detailScrollView} showsVerticalScrollIndicator={false}>
-          <Text style={styles.detail}>{children}</Text>
+        <ScrollView style={detailScrollView} showsVerticalScrollIndicator={false} scrollEnabled={true}
+                  contentContainerStyle={{ 
+                    flexGrow: 1, 
+                    justifyContent: center ? 'center' : 'flex-start', 
+                    // alignItems: center ? 'center' : 'stretch' 
+                  }}
+        >
+         {children}
         </ScrollView>
       </View>
     </View>
@@ -74,6 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     marginTop: 10,
+
   },
   detail: {
     // Your styles for the detail text

@@ -14,7 +14,7 @@ const CartList = ({data}) => {
       )}
       numColumns={1}
       showsVerticalScrollIndicator={false}
-      scrollEnabled={false}
+      scrollEnabled={true}
     />
   </View>
   )

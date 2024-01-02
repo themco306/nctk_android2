@@ -143,7 +143,7 @@ const ProductDetail = ({ route }) => {
           isVisible={modalVisible}
           handleCloseModal={handleCloseModal}
         >
-          {product.attributes.detail}
+          <Text>{product.attributes.detail}</Text>
         </ModalBottom>
         <View style={styles.descriptionBox}>
       <Text style={styles.descriptionBox.descriptionLabel}>Mô tả sản phẩm</Text>

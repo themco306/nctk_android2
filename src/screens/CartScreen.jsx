@@ -7,13 +7,18 @@ import { useIsFocused } from "@react-navigation/native";
 
 const CartScreen = () => {
   const [cartItem, setCartItem] = useState([]);
+  const [user,setUser]=useState('')
   const isFocused = useIsFocused();
 
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("cart");
+      const usergg = await AsyncStorage.getItem("user");
       if (jsonValue != null) {
         setCartItem(JSON.parse(jsonValue));
+      }
+      if (usergg != null) {
+        setUser(JSON.parse(usergg));
       }
     } catch (e) {
       console.log(e);
@@ -27,8 +32,10 @@ const CartScreen = () => {
   }, [isFocused]);
 
   console.log(cartItem);
+  console.log('user',user);
   return (
     <Layout>
+      
       <CartList data={cartItem}/>
     </Layout>
   );

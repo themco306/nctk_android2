@@ -8,8 +8,8 @@ export const userApi = {
         var url = 'auth/local'
         return axiosInstance.post(url, data)
     },
-    me(params) {
-        var url = 'users/me';
+    me(id,params) {
+        var url = 'users/'+id;
         return axiosInstance.get(url, {params})
     },
 }

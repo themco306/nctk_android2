@@ -26,7 +26,7 @@ const FooterProductDetail = ({handleAddToCart}) => {
       <View style={styles.separator} />
       <TouchableOpacity
         style={[styles.button, styles.buttonAdd2Cart]}
-        onPress={{}}
+        onPress={handleShowAdd2Cart}
       >
         <Icon
           style={styles.button.icon}
@@ -37,7 +37,7 @@ const FooterProductDetail = ({handleAddToCart}) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, styles.buttonBuy]}
-        onPress={handleShowAdd2Cart}
+        onPress={{  }}
       >
         <Text style={styles.buttonBuy.text}>Mua Ngay</Text>
       </TouchableOpacity>

@@ -4,10 +4,15 @@ import  Icon  from 'react-native-vector-icons/FontAwesome'
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
+import ModalBottom from '../components/ModalBottom';
+import ModalLogin from '../components/ModalLogin';
+import ModalRegister from '../components/ModalRegister';
 const LoginScreen = () => {
   const navigation = useNavigation();
     const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
+  const [isVisibleLogin,setIsVisibleLogin]=useState(false);
+  const [isVisibleRegister,setIsVisibleRegister]=useState(false);
   GoogleSignin.configure({
     webClientId: '1066155628677-j4d4l5qqemttbi1ue55s53cls1lfflc0.apps.googleusercontent.com',
   });
@@ -43,7 +48,18 @@ const LoginScreen = () => {
       console.error(error);
     }
   };
-  
+  const handleShowModelLogin =()=>{
+    setIsVisibleLogin(true)
+  }
+  const handleCloseModalLogin=()=>{
+    setIsVisibleLogin(false)
+  }
+  const handleShowModelRegister =()=>{
+    setIsVisibleRegister(true)
+  }
+  const handleCloseModalRegister=()=>{
+    setIsVisibleRegister(false)
+  }
   if (initializing) return null;
 
   if (!user) {
@@ -52,8 +68,34 @@ const LoginScreen = () => {
       <Image source={require('../assets/images/background_login.jpg') } style={styles.image} />
       <View style={styles.boxText}>
         <Text style={styles.textWelcome}>Welcome to TK</Text>
-  
-        <Text style={styles.textChoice}>Login/Signup</Text>
+        <View style={styles.boxChoice}>
+        <TouchableOpacity onPressOut={handleShowModelLogin}>
+        <Text style={styles.textChoice}>Đăng nhập</Text>
+        </TouchableOpacity>
+        <ModalBottom
+      title="Đăng Nhập"
+      height='70%'
+      center={true}
+        handleCloseModal={handleCloseModalLogin}
+        isVisible={isVisibleLogin}
+      >
+        <ModalLogin/>
+      </ModalBottom>
+        <Text style={styles.textChoice}>/</Text>
+        <TouchableOpacity onPressOut={handleShowModelRegister}>
+        <Text style={styles.textChoice}>Đăng ký</Text>
+        </TouchableOpacity >
+        <ModalBottom
+      title="Đăng Ký"
+      height='70%'
+      center={true}
+
+        handleCloseModal={handleCloseModalRegister}
+        isVisible={isVisibleRegister}
+      >
+        <ModalRegister/>
+      </ModalBottom>
+        </View>
         <TouchableOpacity style={styles.boxChoiceOther} onPress={() => onGoogleButtonPress().then(() => console.log(user))}>
           <Icon name="google-plus" size={30} color="#fff"/>
           <Text style={styles.textChoiceOther}>Sign in with Google</Text>
@@ -62,7 +104,7 @@ const LoginScreen = () => {
         <Text style={{ textDecorationLine:'underline',fontSize:16 }}>Quay lại</Text>
         </TouchableOpacity>
       </View>
-  
+      
       </View>
     )
   }
@@ -115,6 +157,10 @@ const styles = StyleSheet.create({
         fontSize:45,
         padding:'15%',
         textAlign:'center'
+    },
+    boxChoice:{
+      display:'flex',
+      flexDirection:'row'
     },
     textChoice:{
         fontSize:22,
