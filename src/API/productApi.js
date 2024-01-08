@@ -8,6 +8,10 @@ const productApi={
         var url='products/'+id
         return axiosInstance.get(url,{params})
     },
+    getByCategoryId(id,params){
+        var url=`products?filters[category][id][$eq]=${id}`
+        return axiosInstance.get(url,{params})
+    },
     add(data){
         var url='products'
         return axiosInstance.post(url,data)

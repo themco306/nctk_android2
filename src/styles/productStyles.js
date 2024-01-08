@@ -14,7 +14,9 @@ export const productStyles = StyleSheet.create({
     },
     labelBox:{
       padding:5,
-      backgroundColor:"#fafafa"
+      backgroundColor:"#fafafa",
+      flexDirection:'row',
+      justifyContent:'space-between'
     }
 
   },

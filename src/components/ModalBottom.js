@@ -27,7 +27,7 @@ const ModalBottom = ({ children, isVisible, handleCloseModal ,title=" ",height='
             <Text style={styles.modalClose}>X</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={detailScrollView} showsVerticalScrollIndicator={false} scrollEnabled={true}
+        <ScrollView style={detailScrollView} showsVerticalScrollIndicator={false} scrollEnabled={false}
                   contentContainerStyle={{ 
                     flexGrow: 1, 
                     justifyContent: center ? 'center' : 'flex-start', 

@@ -36,11 +36,17 @@ const ProfileScreen = () => {
   return (
     <Layout>
       <View style={styles.container}>
-        <Text>{userInfor.username}</Text>
+        <View style={styles.boxTop}>
+        <View style={styles.boxUsername}>
         <Image style={styles.avatar} source={{ uri: userInfor.image?AppUrl.ImageURL+userInfor.image.url:'https://cf.shopee.vn/file/vn-50009109-32b657ab46fe8a558a29489a3b23fb6c_xxhdpi' }}/>
-        <TouchableOpacity onPressOut={logout}>
-          <Text>Logout</Text>
+        
+        <Text style={styles.username}>{userInfor.username}</Text>
+        </View>
+        <TouchableOpacity onPressOut={logout} style={styles.boxLogout}>
+          <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
+        </View>
+       
         </View>
     </Layout>
   )
@@ -52,13 +58,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width:'100%',
-    backgroundColor:'#dddddd',
-    justifyContent:'center',
-    alignItems:'center'
+    backgroundColor:'#fff',
+
+  },
+  boxTop:{
+    marginBottom:10,
+    flexDirection:'row',
+    justifyContent:"space-between",
+    padding:10,
+    backgroundColor:'#dddd',
+    borderRadius:10
   },
   avatar:{
-    width:50,
-    height:50,
-    borderRadius:100
+    width:70,
+    height:70,
+    borderRadius:100,
+  },
+  boxUsername:{
+    padding:10,
+    flexDirection:'row',
+  },
+  username:{
+    color:'#ee4d2d',
+    fontSize:20,
+    margin:10
+  },
+  boxLogout:{
+    justifyContent:'center',
+    backgroundColor:'#ee4d2d',
+    height:30,
+    padding:5,
+    borderRadius:5
+  },
+  logoutText:{
+    color:'#fff',
+    fontWeight:'500'
   }
 })

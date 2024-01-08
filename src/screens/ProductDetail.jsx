@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,8 +17,10 @@ import AppUrl from "../API/AppUrl";
 import Loading from "../components/Loading";
 import ModalBottom from "../components/ModalBottom";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Auth } from "../Context/Auth";
 
 const ProductDetail = ({ route }) => {
+  const {user,isLoggedIn}=useContext(Auth)
   const { productId } = route.params;
   const [product,setProduct]=useState({})
   const [loading,setLoading]=useState(true)
@@ -75,20 +77,27 @@ const ProductDetail = ({ route }) => {
     };
   
     try {
+      // Xác định khóa cho giỏ hàng
+      const cartKey = isLoggedIn ? user.id : 0;
+      console.log(cartKey)
       // Lấy giỏ hàng hiện tại từ AsyncStorage
       const cartJSON = await AsyncStorage.getItem('cart');
-      const cart = cartJSON != null ? JSON.parse(cartJSON) : [];
+      const cart = cartJSON != null ? JSON.parse(cartJSON) : {};
   
       // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-      const index = cart.findIndex(item => item.id === newCartItem.id);
+      const userCart = cart[cartKey] || [];
+      const index = userCart.findIndex(item => item.id === newCartItem.id);
   
       if (index !== -1) {
         // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
-        cart[index].quantity += quantity;
+        userCart[index].quantity += quantity;
       } else {
         // Nếu sản phẩm chưa có trong giỏ hàng, thêm vào giỏ hàng
-        cart.push(newCartItem);
+        userCart.push(newCartItem);
       }
+  
+      // Cập nhật giỏ hàng cho người dùng hiện tại
+      cart[cartKey] = userCart;
   
       // Lưu giỏ hàng trở lại AsyncStorage
       await AsyncStorage.setItem('cart', JSON.stringify(cart));
@@ -102,6 +111,7 @@ const ProductDetail = ({ route }) => {
       console.log(e);
     }
   };
+  
   
   const clearStorage = async () => {
     try {

@@ -8,6 +8,9 @@ import { Auth } from './src/Context/Auth';
 import ProductDetail from './src/screens/ProductDetail';
 import HeaderCustom from './src/components/HeaderCustom';
 import ProfileScreen from './src/screens/ProfileScreen';
+import CategoryScreen from './src/screens/CategoryScreen';
+import Search from './src/components/Search';
+import SearchScreen from './src/screens/SearchScreen';
 
 
 const Stack = createStackNavigator();
@@ -39,6 +42,12 @@ export default function AppNavigator() {
            }} />}
           <Stack.Screen name="Cart" component={CartScreen} />
           <Stack.Screen name="ProductDetail" component={ProductDetail} />
+          <Stack.Screen name="Category" component={CategoryScreen} options={({ route }) => ({ title: route.params.title })} />
+          <Stack.Screen name="Search" component={SearchScreen} 
+         options={{ 
+          headerShown:false
+         }}
+          />
         </Stack.Navigator>
   );
 }

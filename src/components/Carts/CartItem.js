@@ -1,11 +1,26 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item,deleteItem }) => {
     const navigation = useNavigation();
     const handleShowProduct=()=>{
         navigation.navigate("ProductDetail", { productId: item.id });
+    }
+    const handelDeleteCart =()=>{
+      Alert.alert(
+        "Xác nhận", // Tiêu đề của hộp thoại
+        "Bạn có chắc chắn muốn xóa không?", // Nội dung của hộp thoại
+        [
+          {
+            text: "Không",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "Có", onPress: () => deleteItem(item.id) }
+        ],
+        { cancelable: false }
+      );
     }
   return (
     <TouchableOpacity onPress={handleShowProduct}>
@@ -20,7 +35,11 @@ const CartItem = ({ item }) => {
           <Text style={styles.price}>số lượng {item.quantity}</Text>
           
         </View>
+       
       </View>
+      <TouchableOpacity style={styles.boxDelete} onPress={handelDeleteCart}>
+          <Text style={styles.textDelete}>Xóa</Text>
+      </TouchableOpacity>
     </View>
     </TouchableOpacity>
   );
@@ -42,6 +61,14 @@ const styles = StyleSheet.create({
     flex: 3,
     height: "70%",
     borderRadius: 10,
+  },
+  boxDelete:{
+    backgroundColor:'#ee4d2d',
+    padding:5,
+    borderRadius:5
+  },
+  textDelete:{
+    color:'#fff'
   },
   boxText: {
     marginLeft: 10,

@@ -111,6 +111,7 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.containerLogin}>
+      {console.log('userGG',user)}
       <Text>Welcome {user.email}</Text>
       <Button title='LogOut' onPress={handleLogOut}/>
     </View>

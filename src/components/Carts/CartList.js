@@ -1,7 +1,7 @@
 import React from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import CartItem from './CartItem'
-const CartList = ({data}) => {
+const CartList = ({data,deleteItem}) => {
 
   return (
     <View  style={styles.container}>
@@ -10,7 +10,7 @@ const CartList = ({data}) => {
       data={data}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-       <CartItem item={item} />
+       <CartItem item={item} deleteItem={deleteItem}/>
       )}
       numColumns={1}
       showsVerticalScrollIndicator={false}
