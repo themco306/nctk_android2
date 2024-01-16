@@ -22,6 +22,7 @@ import { Auth } from "../Context/Auth";
 const ProductDetail = ({ route }) => {
   const {user,isLoggedIn}=useContext(Auth)
   const { productId } = route.params;
+  const { reSearch } = route.params;
   const [product,setProduct]=useState({})
   const [loading,setLoading]=useState(true)
   var params={
@@ -30,10 +31,43 @@ const ProductDetail = ({ route }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         const response = await productApi.get(productId,params);
         console.log(response.data.data)
         setProduct(response.data.data); // Sửa ở đây
         setLoading(false)
+       // Lưu thông tin sản phẩm vào reSearch
+       if(reSearch){
+        const reSearchJSON = await AsyncStorage.getItem('reSearch');
+      let reSearch = reSearchJSON != null ? JSON.parse(reSearchJSON) : [];
+
+      // Tạo một đối tượng mới chỉ chứa các thông tin cần thiết
+      const productInfo = {
+        id: response.data.data.id,
+        title: response.data.data.attributes.title,
+        image: AppUrl.ImageURL + response.data.data.attributes.image.data[0].attributes.url,
+      };
+      
+      // Tìm xem sản phẩm đã tồn tại trong mảng chưa
+      const existingProductIndex = reSearch.findIndex(item => item.id === productInfo.id);
+      
+      // Nếu sản phẩm tồn tại, xóa nó khỏi mảng
+      if (existingProductIndex !== -1) {
+        reSearch.splice(existingProductIndex, 1);
+      }
+      
+      // Thêm sản phẩm vào đầu mảng
+      reSearch.unshift(productInfo);
+      
+      // Nếu số lượng sản phẩm vượt quá 8, xóa sản phẩm cũ nhất
+      if (reSearch.length > 8) {
+        reSearch.pop();
+      }
+      
+
+      await AsyncStorage.setItem('reSearch', JSON.stringify(reSearch));
+       }
+      
       } catch (error) {
         setLoading(false)
 

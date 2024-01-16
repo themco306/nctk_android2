@@ -89,7 +89,7 @@ function CategoryScreen({route}) {
         <View  style={productStyles.productList}>
       <View style={productStyles.productList.labelBox}>
         {loadingC?<Loading />: <Text style={productStyles.productList.label} >{category.attributes.title}</Text>}
-        <TouchableOpacity style={styles.boxOption} onPressOut={handleOpenModal}><Text style={styles.textOption}>+</Text>
+        <TouchableOpacity style={styles.boxOption} onPress={handleOpenModal}><Text style={styles.textOption}>+</Text>
         <ModalBottom
           title=""
           isVisible={modalVisible}

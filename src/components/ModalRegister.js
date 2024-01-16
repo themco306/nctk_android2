@@ -60,7 +60,7 @@ const ModalRegister = () => {
         <TextInput style={styles.input} secureTextEntry={true} value={password} onChangeText={handleChangePassword}/>
       </View>
       <View style={styles.boxLogin}>
-      <TouchableOpacity style={styles.buttonLogin} onPressOut={handleRegister}>
+      <TouchableOpacity style={styles.buttonLogin} onPress={handleRegister}>
         <Text style={styles.textLogin}>Đăng Ký</Text>
       </TouchableOpacity>
       </View>

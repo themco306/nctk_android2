@@ -69,7 +69,7 @@ const LoginScreen = () => {
       <View style={styles.boxText}>
         <Text style={styles.textWelcome}>Welcome to TK</Text>
         <View style={styles.boxChoice}>
-        <TouchableOpacity onPressOut={handleShowModelLogin}>
+        <TouchableOpacity onPress={handleShowModelLogin}>
         <Text style={styles.textChoice}>Đăng nhập</Text>
         </TouchableOpacity>
         <ModalBottom
@@ -82,7 +82,7 @@ const LoginScreen = () => {
         <ModalLogin/>
       </ModalBottom>
         <Text style={styles.textChoice}>/</Text>
-        <TouchableOpacity onPressOut={handleShowModelRegister}>
+        <TouchableOpacity onPress={handleShowModelRegister}>
         <Text style={styles.textChoice}>Đăng ký</Text>
         </TouchableOpacity >
         <ModalBottom

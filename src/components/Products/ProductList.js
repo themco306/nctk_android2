@@ -15,6 +15,9 @@ const ProductList = () => {
   const [loading,setLoading]=useState(true)
   var params={
     populate:'*',
+    // filters: {
+    //   title: { $contains: 'con' }
+    // }
   }
   useEffect(() => {
     const fetchData = async () => {

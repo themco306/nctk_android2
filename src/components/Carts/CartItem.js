@@ -1,8 +1,9 @@
 import React from "react";
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-const CartItem = ({ item,deleteItem }) => {
+import CheckBox from '@react-native-community/checkbox';
+const CartItem = ({ item,deleteItem,toggleSelection,selectedItems }) => {
+  const isSelected = selectedItems.includes(item);
     const navigation = useNavigation();
     const handleShowProduct=()=>{
         navigation.navigate("ProductDetail", { productId: item.id });
@@ -22,10 +23,20 @@ const CartItem = ({ item,deleteItem }) => {
         { cancelable: false }
       );
     }
+    const handleToggleSelection = () => {
+      toggleSelection(item);
+    }
   return (
-    <TouchableOpacity onPress={handleShowProduct}>
+  
+          
     <View style={styles.container}>
-      <Image style={styles.image} source={{ uri: item.image }} />
+    <CheckBox style={{ marginEnd:5 }}
+    value={isSelected}
+      onValueChange={handleToggleSelection}
+    />
+    <TouchableOpacity style={styles.image} onPress={handleShowProduct}>
+      <Image style={{ width:'100%',height:'100%' }}  source={{ uri: item.image }} />
+    </TouchableOpacity>
       <View style={styles.boxText}>
         <View>
           <Text style={styles.title}>{item.title}</Text>
@@ -37,11 +48,14 @@ const CartItem = ({ item,deleteItem }) => {
         </View>
        
       </View>
+      
       <TouchableOpacity style={styles.boxDelete} onPress={handelDeleteCart}>
           <Text style={styles.textDelete}>Xóa</Text>
       </TouchableOpacity>
+     
     </View>
-    </TouchableOpacity>
+   
+
   );
 };
 

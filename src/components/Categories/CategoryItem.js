@@ -12,7 +12,7 @@ const CategoryItem = ({item}) => {
     navigation.navigate("Category", { categoryId: item.id,title:item.title });
   };
   return (
-    <TouchableOpacity style={categoryStyles.categoryItem} onPressOut={handleShowCategory}>
+    <TouchableOpacity style={categoryStyles.categoryItem} onPress={handleShowCategory}>
 
     <Image source={{ uri: AppUrl.ImageURL+item.attributes.image.data.attributes.url }} style={categoryStyles.categoryImage} />
     <Text style={categoryStyles.title}>{item.attributes.title}</Text>

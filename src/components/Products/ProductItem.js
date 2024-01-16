@@ -22,10 +22,10 @@ const formatSold = (sold) => {
   return sold.toString();
 };
 
-const ProductItem = ({ item }) => {
+const ProductItem = ({ item,reSearch=false }) => {
   const navigation = useNavigation();
   const handleShowDetail = () => {
-    navigation.navigate("ProductDetail", { productId: item.id });
+    navigation.navigate("ProductDetail", { productId: item.id,reSearch:reSearch });
   };
   return (
     <View style={productStyles.productItem}>
@@ -47,9 +47,11 @@ const ProductItem = ({ item }) => {
           </Text>
 
           <View style={productStyles.priceSoldRow}>
-            <Text style={productStyles.productPrice}>{`₫${item.attributes.price.toFixed(
-              0
-            )}`}</Text>
+          <Text style={productStyles.productPrice}>
+  {`₫${Number(item.attributes.price).toLocaleString('en-US', {minimumFractionDigits: 0})}`}
+</Text>
+
+
             <Text style={productStyles.productSold}>Đã bán {formatSold(parseInt(item.attributes.sold))} </Text>
           </View>
         </View>

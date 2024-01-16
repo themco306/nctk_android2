@@ -15,6 +15,7 @@ const HomeScreen = () => {
         <CategoryList/>
         <ProductList />
         </ScrollView>
+        
     </Layout>
   )
 }

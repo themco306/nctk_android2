@@ -1,16 +1,18 @@
 import React from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import CartItem from './CartItem'
-const CartList = ({data,deleteItem}) => {
 
+const CartList = ({data,deleteItem,toggleSelection,selectedItems}) => {
+  console.log('sss',selectedItems)
   return (
     <View  style={styles.container}>
+
     <FlatList
     style={styles.list}
       data={data}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-       <CartItem item={item} deleteItem={deleteItem}/>
+       <CartItem item={item} deleteItem={deleteItem} toggleSelection={toggleSelection} selectedItems={selectedItems}/>
       )}
       numColumns={1}
       showsVerticalScrollIndicator={false}

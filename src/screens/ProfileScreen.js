@@ -42,7 +42,7 @@ const ProfileScreen = () => {
         
         <Text style={styles.username}>{userInfor.username}</Text>
         </View>
-        <TouchableOpacity onPressOut={logout} style={styles.boxLogout}>
+        <TouchableOpacity onPress={logout} style={styles.boxLogout}>
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
         </View>

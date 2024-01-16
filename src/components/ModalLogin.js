@@ -48,7 +48,7 @@ const ModalLogin = () => {
         <TextInput style={styles.input} secureTextEntry={true} value={password} onChangeText={handleChangePassword}/>
       </View>
       <View style={styles.boxLogin}>
-      <TouchableOpacity style={styles.buttonLogin} onPressOut={handleLogin}>
+      <TouchableOpacity style={styles.buttonLogin} onPress={handleLogin}>
         <Text style={styles.textLogin}>Đăng nhập</Text>
       </TouchableOpacity>
       </View>

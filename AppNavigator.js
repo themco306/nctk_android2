@@ -11,6 +11,8 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import CategoryScreen from './src/screens/CategoryScreen';
 import Search from './src/components/Search';
 import SearchScreen from './src/screens/SearchScreen';
+import SearchResultScreen from './src/screens/SearchResultScreen';
+import OrderScreen from './src/screens/OrderScreen';
 
 
 const Stack = createStackNavigator();
@@ -41,12 +43,19 @@ export default function AppNavigator() {
             headerShown:false
            }} />}
           <Stack.Screen name="Cart" component={CartScreen} />
+          <Stack.Screen name="Order" component={OrderScreen} />
           <Stack.Screen name="ProductDetail" component={ProductDetail} />
           <Stack.Screen name="Category" component={CategoryScreen} options={({ route }) => ({ title: route.params.title })} />
           <Stack.Screen name="Search" component={SearchScreen} 
          options={{ 
           headerShown:false
          }}
+          />
+          <Stack.Screen name="SearchResult" component={SearchResultScreen} 
+          options={{
+            headerTitle: props => <HeaderCustom {...props} />, // Sử dụng SearchBar như một tiêu đề tùy chỉnh
+            headerLeft:null
+          }}
           />
         </Stack.Navigator>
   );
