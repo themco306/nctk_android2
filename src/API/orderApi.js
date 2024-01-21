@@ -12,5 +12,9 @@ import axiosInstance from "./axiosInstance"
         var url='orders'
         return axiosInstance.get(url,{params})
     },
+    update(id,data){
+        var url = 'orders/'+id;
+        return axiosInstance.put(url, data)
+    }
 }
 export default orderApi

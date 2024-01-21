@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import Loading from '../Loading'
 import orderApi from '../../API/orderApi'
@@ -9,7 +9,7 @@ import ShowOrder from './ShowOrder'
 const TabWaitingForConfirmation = () => {
   const [orders,setOrders]=useState([])
   const {user}=useContext(Auth)
-
+  const [updateTrigger, setUpdateTrigger] = useState(0);
   const [loading,setLoading]=useState(true)
   var params={
     populate:'*',
@@ -34,16 +34,19 @@ const TabWaitingForConfirmation = () => {
     };
   
     fetchData();
-  }, []);
+  }, [updateTrigger]);
 
   if (loading) {
     return <Loading />;
   }
   console.log(orders)
   return (
-    <View>
-      {orders&&orders.map((order)=>(<ShowOrder data={order}/>))}
-    </View>
+    <ScrollView>
+      {orders&&orders.map((order)=>(
+      
+      <ShowOrder key={order.id} data={order} allowCancel={true} setUpdateTrigger={setUpdateTrigger}/>
+      ))}
+    </ScrollView>
   )
 }
 

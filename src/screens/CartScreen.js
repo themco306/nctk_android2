@@ -19,8 +19,6 @@ const CartScreen = () => {
   const [total,setTotal] = useState(0)
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [loadingBtn,setLoadingBtn]=useState(false);
-  const [infoDelivery,setInfoDelivery]=useState({
-})
   const navigation = useNavigation();
   const toggleSelection = (item) => {
     let newSelectedItems;
@@ -31,12 +29,9 @@ const CartScreen = () => {
     }
     setSelectedItems(newSelectedItems);
   };
-
-
 // useEffect(() => {
 //   setIsAllSelected(selectedItems.length === cartItem.length);
 // }, [selectedItems])
-
 const selectAllItems = () => {
   if (isAllSelected) {
     setSelectedItems([])
@@ -48,32 +43,24 @@ const selectAllItems = () => {
     const newTotal = selectedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     setTotal(newTotal);
   };
-  
   useEffect(() => {
     updateTotal();
   }, [selectedItems,cartItem]);
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("cart");
-
       if (jsonValue != null) {
         let cart = JSON.parse(jsonValue);
-        // console.log(cart)
-        // Nếu người dùng đã đăng nhập, chỉ lấy các mục thuộc về người dùng này
         if (isLoggedIn) {
           setCartItem(cart[user.id]);
         } else {
-          // Nếu người dùng chưa đăng nhập, chỉ lấy các mục thuộc về 'temp'
           setCartItem(cart['0']);
         }
-        
       }
     } catch (e) {
       console.log(e)
     }
   };
-  
-
   useEffect(() => {
     if (isFocused) {
       getData();
@@ -86,19 +73,17 @@ const selectAllItems = () => {
       const jsonValue = await AsyncStorage.getItem("cart");
       if (jsonValue != null) {
         let cart = JSON.parse(jsonValue);
-        // Xác định khóa cho giỏ hàng
         const cartKey = isLoggedIn ? user.id : '0';
-        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
         const index = cart[cartKey].findIndex(item => item.id === id);
         if (index !== -1) {
-          // Nếu sản phẩm đã có trong giỏ hàng, xóa nó
           cart[cartKey].splice(index, 1)
         }
-        // Lưu giỏ hàng trở lại AsyncStorage
         await AsyncStorage.setItem("cart", JSON.stringify(cart));
+        setSelectedItems([]
+        );
         setCartItem(cart[cartKey]);
 
-        setSelectedItems([]);
+        
       }
     } catch (e) {
       console.log(e);
@@ -156,7 +141,7 @@ const selectAllItems = () => {
           qty: item.quantity,
           amount: item.price * item.quantity,
           price: item.price,
-          order: orderID,
+          orderId: orderID,
           product: item.id,
         },
       };
@@ -220,8 +205,10 @@ const selectAllItems = () => {
         const orderID = responseOrder.data.data.id;
         console.log(orderID)
         await createOrderDetail(selectedItems, orderID);
-          setLoadingBtn(false)
-        
+
+        await Promise.all(selectedItems.map((item)=>(deleteItem(item.id))))
+        setLoadingBtn(false)
+          navigation.navigate("Order")
       }else{
         navigation.navigate("Profile")
         ToastAndroid.showWithGravity(
@@ -232,7 +219,7 @@ const selectAllItems = () => {
         return
 
       }
-      navigation.navigate("Order")
+      
     }catch(e){
      console.log(e)
     }

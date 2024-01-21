@@ -4,5 +4,9 @@ import axiosInstance from "./axiosInstance"
         var url = 'order-details';
         return axiosInstance.post(url, data)
     },
+    getAll(params){
+        var url='order-details'
+        return axiosInstance.get(url,{params})
+    },
 }
 export default orderDetailApi

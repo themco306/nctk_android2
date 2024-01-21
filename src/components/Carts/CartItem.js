@@ -2,8 +2,7 @@ import React from "react";
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CheckBox from '@react-native-community/checkbox';
-const CartItem = ({ item,deleteItem,toggleSelection,selectedItems }) => {
-  const isSelected = selectedItems.includes(item);
+const CartItem = ({ item,deleteItem,toggleSelection,isSelected }) => {
     const navigation = useNavigation();
     const handleShowProduct=()=>{
         navigation.navigate("ProductDetail", { productId: item.id });

@@ -12,7 +12,7 @@ const CartList = ({data,deleteItem,toggleSelection,selectedItems}) => {
       data={data}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-       <CartItem item={item} deleteItem={deleteItem} toggleSelection={toggleSelection} selectedItems={selectedItems}/>
+       <CartItem item={item} deleteItem={deleteItem} toggleSelection={toggleSelection} isSelected={selectedItems.includes(item)}/>
       )}
       numColumns={1}
       showsVerticalScrollIndicator={false}

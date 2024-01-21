@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   modalClose: {
     color: '#000',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 25,
     paddingHorizontal: 5,
   },
   modalText: {
