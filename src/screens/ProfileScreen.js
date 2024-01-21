@@ -5,11 +5,22 @@ import { Auth } from '../Context/Auth'
 import { userApi } from '../API/userApi'
 import Loading from '../components/Loading'
 import AppUrl from '../API/AppUrl'
-
+import Icon from "react-native-vector-icons/FontAwesome";
+import ModalBottom from '../components/ModalBottom'
+import InfoDelivery from '../components/Users/InfoDelivery'
+import { useNavigation } from "@react-navigation/native";
 const ProfileScreen = () => {
   const {user,logout}=useContext(Auth)
+  const navigation = useNavigation();
+  const [isVisibleInfoDelivery,setIsVisibleInfoDelivery]=useState(false);
   const [loading,setLoading]=useState(true)
   const [userInfor,setUserInfor]=useState({})
+  const handleShowModelInfoDelivery =()=>{
+    setIsVisibleInfoDelivery(true)
+  }
+  const handleCloseModalInfoDelivery=()=>{
+    setIsVisibleInfoDelivery(false)
+  }
   var params={
     populate:'*',
   }
@@ -46,7 +57,44 @@ const ProfileScreen = () => {
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
         </View>
-       
+        <TouchableOpacity style={styles.boxOption} onPress={handleShowModelInfoDelivery}>
+          <Text style={styles.textOption}>Thông tin vận chuyển</Text>
+          <Icon
+          style={styles.iconOption}
+          name="chevron-right"
+          size={30}
+          color="#900"
+        />
+         <ModalBottom
+      title="Thông tin vận chuyển"
+      height='80%'
+      center={true}
+        handleCloseModal={handleCloseModalInfoDelivery}
+        isVisible={isVisibleInfoDelivery}
+      >
+        <InfoDelivery id={user.id} userInfor={userInfor}/>
+      </ModalBottom>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.boxOption} onPress={
+          ()=>(navigation.navigate("Order"))
+        }>
+          <Text style={styles.textOption}>Đơn hàng của bạn</Text>
+          <Icon
+          style={styles.iconOption}
+          name="chevron-right"
+          size={30}
+          color="#900"
+        />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.boxOption}>
+          <Text style={styles.textOption}>Đổi mật khẩu</Text>
+          <Icon
+          style={styles.iconOption}
+          name="chevron-right"
+          size={30}
+          color="#900"
+        />
+        </TouchableOpacity>
         </View>
     </Layout>
   )
@@ -88,10 +136,30 @@ const styles = StyleSheet.create({
     backgroundColor:'#ee4d2d',
     height:30,
     padding:5,
-    borderRadius:5
+    borderRadius:10
   },
   logoutText:{
     color:'#fff',
     fontWeight:'500'
+  },
+  boxOption:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    borderWidth:1,
+    borderColor:'#DFDFDF',
+    borderRadius:5,
+    marginHorizontal:10,
+    marginVertical:5
+  },
+  textOption:{
+    fontSize:16,
+    marginLeft:10,
+    paddingVertical:10
+  },
+  iconOption:{
+    fontSize:30,
+    marginRight:5,
+    color:'#000'
   }
 })

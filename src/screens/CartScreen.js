@@ -7,6 +7,9 @@ import { useIsFocused } from "@react-navigation/native";
 import { Auth } from "../Context/Auth";
 import CheckBox from '@react-native-community/checkbox';
 import { useNavigation } from "@react-navigation/native";
+import orderApi from "../API/orderApi";
+import { userApi } from "../API/userApi";
+import orderDetailApi from "../API/orderDetailApi";
 
 const CartScreen = () => {
   const {user,isLoggedIn}=useContext(Auth)
@@ -15,6 +18,9 @@ const CartScreen = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [total,setTotal] = useState(0)
   const [isAllSelected, setIsAllSelected] = useState(false);
+  const [loadingBtn,setLoadingBtn]=useState(false);
+  const [infoDelivery,setInfoDelivery]=useState({
+})
   const navigation = useNavigation();
   const toggleSelection = (item) => {
     let newSelectedItems;
@@ -27,9 +33,9 @@ const CartScreen = () => {
   };
 
 
-useEffect(() => {
-  setIsAllSelected(selectedItems.length === cartItem.length);
-}, [selectedItems])
+// useEffect(() => {
+//   setIsAllSelected(selectedItems.length === cartItem.length);
+// }, [selectedItems])
 
 const selectAllItems = () => {
   if (isAllSelected) {
@@ -52,7 +58,7 @@ const selectAllItems = () => {
 
       if (jsonValue != null) {
         let cart = JSON.parse(jsonValue);
-        console.log(cart)
+        // console.log(cart)
         // Nếu người dùng đã đăng nhập, chỉ lấy các mục thuộc về người dùng này
         if (isLoggedIn) {
           setCartItem(cart[user.id]);
@@ -98,6 +104,67 @@ const selectAllItems = () => {
       console.log(e);
     }
   };
+  const generateUniqueCode = async () => {
+    console.log('1100')
+    let code;
+    let existingOrder;
+    do {
+      code = generateCode();
+      existingOrder = await getOrder(code);
+    } while (existingOrder);
+    return code;
+  };
+  const createOrder = async (order) => {
+    try {
+      const responseOrder = await orderApi.add(order);
+      console.log('116')
+      return responseOrder;
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const getOrder = async (code) => {
+    const response = await orderApi.getOrderCode(code);
+    console.log('115')
+    if (response.ok) {
+      const orders = await response.json();
+      return orders.length > 0 ? orders[0] : null;
+    } else {
+      return null;
+    }
+  };
+  const generateCode = () => {
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(-2);
+    const month = (now.getMonth() + 1).toString().padStart(2, "0");
+    const day = now.getDate().toString().padStart(2, "0");
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const seconds = now.getSeconds().toString().padStart(2, "0");
+    const random = Math.floor(Math.random() * 1000)
+      .toString()
+      .padStart(3, "0");
+    const code = `${year}${month}${day}${hours}${minutes}${seconds}${random}`;
+    return code;
+  };
+  const createOrderDetail = async (data, orderID) => {
+    console.log('data',data)
+    for (const item of data) {
+      const orderDetail = {
+        data: {
+          qty: item.quantity,
+          amount: item.price * item.quantity,
+          price: item.price,
+          order: orderID,
+          product: item.id,
+        },
+      };
+      // Gọi API để tạo orderDetail cho item
+      const response = await orderDetailApi.add(orderDetail);
+      console.log("orderDetail created:", response);
+    }
+  };
   const handleOnSubmit= async()=>{
     if(selectedItems.length===0){
       ToastAndroid.showWithGravity(
@@ -116,7 +183,60 @@ const selectAllItems = () => {
       );
       return
     }
-    navigation.navigate("Order")
+    try {
+      setLoadingBtn(true)
+      let params={
+        populate:'*',
+            filters: {
+          userId: { $eq:parseInt(user.id) }
+      }
+      }
+      const response = await userApi.getInfoDelivery(params)
+      const temp=response.data.data.length>0
+      if(temp){
+        if(response.data.data[0].attributes.deliveryAddress===''||response.data.data[0].attributes.deliveryPhone===''){
+          navigation.navigate("Profile")
+          ToastAndroid.showWithGravity(
+            'Thêm thông tin vận chuyển',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          return
+        }
+        const code = await generateUniqueCode();
+        console.log('114')
+        const senData = {
+          data: {
+            deliveryName: response.data.data[0].attributes.deliveryName,
+          deliveryEmail: response.data.data[0].attributes.deliveryEmail,
+          deliveryPhone: response.data.data[0].attributes.deliveryPhone,
+          code: code,
+          deliveryAddress: response.data.data[0].attributes.deliveryAddress,
+          userId:parseInt(user.id)
+          },
+        };
+        console.log("orderInfo", senData);
+        const responseOrder = await createOrder(senData);
+        const orderID = responseOrder.data.data.id;
+        console.log(orderID)
+        await createOrderDetail(selectedItems, orderID);
+          setLoadingBtn(false)
+        
+      }else{
+        navigation.navigate("Profile")
+        ToastAndroid.showWithGravity(
+          'Thêm thông tin vận chuyển',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+        return
+
+      }
+      navigation.navigate("Order")
+    }catch(e){
+     console.log(e)
+    }
+    
   }
   return (
     <Layout>
@@ -132,9 +252,15 @@ const selectAllItems = () => {
           <Text style={{ fontSize:18,textAlignVertical:'center' }}>Tạm tính: </Text>
           <Text style={{  fontSize:18, textAlignVertical:'center',color:'#ee4d2d' }}> {`₫${Number(total).toLocaleString('en-US', {minimumFractionDigits: 0})}`}</Text>
         </View>
+        {!loadingBtn?
         <TouchableOpacity style={styles.boxButton} onPress={handleOnSubmit}>
-          <Text style={styles.textButton}>Đặt hàng</Text>
+        <Text style={styles.textButton}>Đặt hàng</Text>
+      </TouchableOpacity>
+      :
+      <TouchableOpacity style={[styles.boxButton,{backgroundColor:'#A6B1B5'}]}>
+          <Text style={[styles.textButton,{color:'#000'}]}>Đặt hàng</Text>
         </TouchableOpacity>
+      }
       </View>
       
     </Layout>

@@ -7,6 +7,10 @@ import axiosInstance from "./axiosInstance"
     getOrderCode(code){
         let url = 'orders?filters[code]='+code;  
         return axiosInstance.get(url)
-    }
+    },
+    getAll(params){
+        var url='orders'
+        return axiosInstance.get(url,{params})
+    },
 }
 export default orderApi

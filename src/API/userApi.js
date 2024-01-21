@@ -12,4 +12,16 @@ export const userApi = {
         var url = 'users/'+id;
         return axiosInstance.get(url, {params})
     },
+    getInfoDelivery(params) {
+        var url = 'info-deliveries';
+        return axiosInstance.get(url, {params})
+    },
+    postInfoDelivery(data) {
+        var url = 'info-deliveries';
+        return axiosInstance.post(url,data)
+    },
+    putInfoDelivery(id,data) {
+        var url = 'info-deliveries/'+id;
+        return axiosInstance.put(url,data)
+    },
 }
