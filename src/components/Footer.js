@@ -19,7 +19,7 @@ const Footer = () => {
 
   };
   const handleShowLoginScreen = () => {
-    navigation.navigate('LoginScreen')
+    navigation.navigate('Profile')
 
   };
   return (

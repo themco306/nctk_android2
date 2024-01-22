@@ -29,9 +29,9 @@ const CartScreen = () => {
     }
     setSelectedItems(newSelectedItems);
   };
-// useEffect(() => {
-//   setIsAllSelected(selectedItems.length === cartItem.length);
-// }, [selectedItems])
+useEffect(() => {
+  setIsAllSelected(selectedItems.length === cartItem.length);
+}, [selectedItems])
 const selectAllItems = () => {
   if (isAllSelected) {
     setSelectedItems([])
@@ -160,7 +160,7 @@ const selectAllItems = () => {
       return
     }
     if(!isLoggedIn){
-      navigation.navigate("LoginScreen")
+      navigation.navigate("Profile")
       ToastAndroid.showWithGravity(
         'Cần đăng nhập trước',
         ToastAndroid.SHORT,

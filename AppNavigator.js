@@ -39,7 +39,7 @@ export default function AppNavigator() {
             headerTitle: props => <HeaderCustom {...props} />, // Sử dụng SearchBar như một tiêu đề tùy chỉnh
           }}
           />
-          {isLoggedIn?<Stack.Screen name="Profile" component={ProfileScreen}  />:<Stack.Screen name="LoginScreen" component={LoginScreen} options={{ 
+          {isLoggedIn?<Stack.Screen name="Profile" component={ProfileScreen}  />:<Stack.Screen name="Profile" component={LoginScreen} options={{ 
             headerShown:false
            }} />}
           <Stack.Screen name="Cart" component={CartScreen} />

@@ -28,7 +28,7 @@ const ProfileScreen = () => {
     const fetchData = async () => {
       try {
         const response = await userApi.me(user.id,params);
-        // console.log(response.data.image.url)
+        console.log(response.data)
         setUserInfor(response.data)
         setLoading(false)
       } catch (error) {
@@ -37,8 +37,15 @@ const ProfileScreen = () => {
         setLoading(false)
       }
     };
-  
-    fetchData();
+    if(user!==null){
+      fetchData();
+
+    }
+    else{
+      navigation.navigate("Home")
+    }
+
+
   }, []);
 
   if (loading) {
@@ -72,7 +79,7 @@ const ProfileScreen = () => {
         handleCloseModal={handleCloseModalInfoDelivery}
         isVisible={isVisibleInfoDelivery}
       >
-        <InfoDelivery id={user.id} userInfor={userInfor}/>
+        <InfoDelivery id={userInfor.id} userInfor={userInfor}/>
       </ModalBottom>
         </TouchableOpacity>
         <TouchableOpacity style={styles.boxOption} onPress={

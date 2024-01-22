@@ -157,7 +157,7 @@ const ProductDetail = ({ route }) => {
   };
   
   // Gọi hàm để xóa tất cả dữ liệu
-  // clearStorage();
+  clearStorage();
   
   if (loading) {
     return <Loading />;

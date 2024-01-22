@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthProvider } from './src/Context/Auth';
 import AppNavigator from './AppNavigator';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -16,6 +17,13 @@ export default function App() {
   const [isLoading, setLoading] = useState(true);
   const [lastBackPressed, setLastBackPressed] = useState(0);
   // console.log(isLoggedIn)
+  // useEffect(() => {
+  //   const setItems = async () => {
+  //     const emptyCart = [];
+  //     await AsyncStorage.setItem('cart', JSON.stringify(emptyCart));
+  //   };
+  //   setItems();
+  // }, []);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(false);
@@ -68,72 +76,4 @@ export default function App() {
 
 
 
-// export default function App() {
-//   const [initializing, setInitializing] = useState(true);
-//   const [user, setUser] = useState();
-//   GoogleSignin.configure({
-//     webClientId: '1066155628677-j4d4l5qqemttbi1ue55s53cls1lfflc0.apps.googleusercontent.com',
-//   });
-//   function onAuthStateChanged(user) {
-//     setUser(user);
-//     if (initializing) setInitializing(false);
-//   }
-//   useEffect(() => {
-//     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-//     return subscriber; // unsubscribe on unmount
-//   }, []);
-//   const onGoogleButtonPress= async ()=> {
-//     // Check if your device supports Google Play
-//     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-//     // Get the users ID token
-//     const { idToken } = await GoogleSignin.signIn();
-  
-//     // Create a Google credential with the token
-//     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  
-//     // Sign-in the user with the credential
-//     return auth().signInWithCredential(googleCredential);
-//   }
-//   const handleLogOut = async () => {
-//     try {
-//       // Sign out from firebase
-//       await auth().signOut();
-//       // Sign out from Google Signin
-//       await GoogleSignin.revokeAccess();
-//       await GoogleSignin.signOut();
-//       setUser(null); // Remember to set user to null
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-  
-//   if (initializing) return null;
 
-//   if (!user) {
-//     return (
-//       <View style={styles.container}>
-//          <GoogleSigninButton
-//       title="Google Sign-In"
-//       onPress={() => onGoogleButtonPress().then(() => console.log(user))}
-//     />
-    
-//       </View>
-//     );
-//   }
-
-//   return (
-//     <View style={styles.container}>
-//       <Text>Welcome {user.email}</Text>
-//       <Button title='LogOut' onPress={handleLogOut}/>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
